@@ -17,9 +17,22 @@ function rawData = readRaw(fileName, bitNum, row, col)
 % get fileID
 fin = fopen(fileName, 'r');
 % format precision
-format = sprintf('uint%d=>uint%d',bitNum,bitNum);
+switch bitNum
+    case 8
+        disp('bits: 8');
+        format = sprintf('uint8=>uint8');
+    case 10
+        disp('bits: 10');
+        disp('waiting');
+    case 12
+        disp('bits: 12');
+        disp('waiting');
+    case 16
+        disp('bits: 16');
+        format = sprintf('uint16=>uint16');
+end
 I = fread(fin, row*col, format);
 z = reshape(I, row, col);
 z = z';
-rawData = imshow(z);
+rawData = z;
 end
