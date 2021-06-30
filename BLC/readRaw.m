@@ -11,8 +11,7 @@ function rawData = readRaw(fileName, bitNum, row, col)
 %       author:     wtzhu
 %       e-mail:     wtzhu_13@163.com
 % Last Modified by wtzhu v1.0 2021-06-29
-% Note: this func can read 8bits or 16bits only, 10bit and 12bits will be
-% updated after some time
+% Note: 
 
 % get fileID
 fin = fopen(fileName, 'r');
@@ -23,16 +22,18 @@ switch bitNum
         format = sprintf('uint8=>uint8');
     case 10
         disp('bits: 10');
-        disp('waiting');
+        format = sprintf('uint16=>uint16');
     case 12
         disp('bits: 12');
-        disp('waiting');
+        format = sprintf('uint16=>uint16');
     case 16
         disp('bits: 16');
         format = sprintf('uint16=>uint16');
 end
 I = fread(fin, row*col, format);
+% plot(I, '.');
 z = reshape(I, row, col);
 z = z';
 rawData = z;
+% imshow(z);
 end
