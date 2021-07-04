@@ -6,7 +6,7 @@
 clc;clear;close all;
 
 % ------------Raw Format----------------
-filePath = 'HisiRAW_4208x3120_8bits_RGGB.raw';
+filePath = 'images/HisiRAW_4208x3120_8bits_RGGB.raw';
 bayerFormat = 'RGGB';
 row = 4208;
 col = 3120;
@@ -67,22 +67,22 @@ switch bayerFormat
         cData(2:2:end, 2:2:end) = cB(1:1:end, 1:1:end);
     case 'GRBG'
         disp('bayerFormat: GRBG');
-        data(1:2:end, 1:2:end) = cGr(1:1:end, 1:1:end);
-        data(1:2:end, 2:2:end) = cR(1:1:end, 1:1:end);
-        data(2:2:end, 1:2:end) = cB(1:1:end, 1:1:end);
+        cData(1:2:end, 1:2:end) = cGr(1:1:end, 1:1:end);
+        datacData(1:2:end, 2:2:end) = cR(1:1:end, 1:1:end);
+        cData(2:2:end, 1:2:end) = cB(1:1:end, 1:1:end);
         data(2:2:end, 2:2:end) = cGb(1:1:end, 1:1:end);
     case 'GBRG'
         disp('bayerFormat: GBRG');
-        data(1:2:end, 1:2:end) = cGb(1:1:end, 1:1:end);
-        data(1:2:end, 2:2:end) = cB(1:1:end, 1:1:end);
-        data(2:2:end, 1:2:end) = cR(1:1:end, 1:1:end);
-        data(2:2:end, 2:2:end) = cGr(1:1:end, 1:1:end);
+        cData(1:2:end, 1:2:end) = cGb(1:1:end, 1:1:end);
+        cData(1:2:end, 2:2:end) = cB(1:1:end, 1:1:end);
+        cData(2:2:end, 1:2:end) = cR(1:1:end, 1:1:end);
+        cData(2:2:end, 2:2:end) = cGr(1:1:end, 1:1:end);
     case 'BGGR'
         disp('bayerFormat: BGGR');
-        data(1:2:end, 1:2:end) = cB(1:1:end, 1:1:end);
-        data(1:2:end, 2:2:end) = cGb(1:1:end, 1:1:end);
-        data(2:2:end, 1:2:end) = cGr(1:1:end, 1:1:end);
-        data(2:2:end, 2:2:end) = cR(1:1:end, 1:1:end);
+        cData(1:2:end, 1:2:end) = cB(1:1:end, 1:1:end);
+        cData(1:2:end, 2:2:end) = cGb(1:1:end, 1:1:end);
+        cData(2:2:end, 1:2:end) = cGr(1:1:end, 1:1:end);
+        cData(2:2:end, 2:2:end) = cR(1:1:end, 1:1:end);
 end
-show(data, cData);
+show(data, cData, bits, Gr_mean);
 

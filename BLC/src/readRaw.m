@@ -1,8 +1,8 @@
-function rawData = readRaw(fileName, bitNum, row, col)
+function rawData = readRaw(fileName, bitsNum, row, col)
 % readRaw.m    get rawData from HiRawImage
 %   Input:
 %       fileName    the path of HiRawImage 
-%       bitNum      the number of bits of raw image
+%       bitsNum      the number of bits of raw image
 %       row         the row of the raw image
 %       col         the column of the raw image
 %   Output:
@@ -16,7 +16,7 @@ function rawData = readRaw(fileName, bitNum, row, col)
 % get fileID
 fin = fopen(fileName, 'r');
 % format precision
-switch bitNum
+switch bitsNum
     case 8
         disp('bits: 8');
         format = sprintf('uint8=>uint8');
