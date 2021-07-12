@@ -6,13 +6,13 @@
 clc;clear;close all;
 
 % --------parameters of calibretion------------
-filePath = 'images/lsc.bmp';
-side_num = 16;
+filePath = 'images/lscRefImg.jpg';
+side_num = 17;
 meshON = 1;
 % ---------------------------------------------
 
 image = imread(filePath);
-[height, width, chan] = size(image);
+[height, width] = size(image);
 side_y = floor(height/side_num);
 side_x = floor(width/side_num);
 h = imshow(image);
@@ -26,13 +26,6 @@ title('refImg');
 
 %% compress resolution
 image_point = zeros(side_num+1,side_num+1);
-image_r_point= zeros(side_num+1,side_num+1);
-image_g_point= zeros(side_num+1,side_num+1);
-image_b_point= zeros(side_num+1,side_num+1);
-
-image_r = image(:,:,1);
-image_g = image(:,:,2);
-image_b = image(:,:,3);
 for i = 0:side_num
     for j = 0:side_num
         x_clip = floor([j*side_x - side_x/2, j*side_x + side_x/2]);
@@ -48,33 +41,22 @@ for i = 0:side_num
         x_clip(x_clip>width) = width;
         y_clip(y_clip<1) = 1;
         y_clip(y_clip>height) = height;
-        data_r_in = image_r(y_clip(1):y_clip(2), x_clip(1):x_clip(2));
-        image_r_point(i+1,j+1) = mean(mean(data_r_in));
-        data_g_in = image_g(y_clip(1):y_clip(2), x_clip(1):x_clip(2));
-        image_g_point(i+1,j+1) = mean(mean(data_g_in));
-        data_b_in = image_b(y_clip(1):y_clip(2), x_clip(1):x_clip(2));
-        image_b_point(i+1,j+1) = mean(mean(data_b_in));
+        data_in = image(y_clip(1):y_clip(2), x_clip(1):x_clip(2));
+        image_point(i+1,j+1) = mean(mean(data_in));
     end
 end
 
-rGain = zeros(side_num+1,side_num+1);
-gGain = zeros(side_num+1,side_num+1);
-bGain = zeros(side_num+1,side_num+1);
+Gain = zeros(side_num+1,side_num+1);
 
 %% caculate lsc luma gain
 for i = 1:side_num+1
     for j = 1:side_num+1
-%         image_r_luma_gain_point(i,j) = mean2(image_r_point(uint8(side_num/2)-1:uint8(side_num/2)+1, uint8(side_num/2)-1:uint8(side_num/2)+1)) / image_r_point(i,j)*256;
-%         image_g_luma_gain_point(i,j) = mean2(image_g_point(uint8(side_num/2)-1:uint8(side_num/2)+1, uint8(side_num/2)-1:uint8(side_num/2)+1)) / image_g_point(i,j)*256;
-%         image_b_luma_gain_point(i,j) = mean2(image_b_point(uint8(side_num/2)-1:uint8(side_num/2)+1, uint8(side_num/2)-1:uint8(side_num/2)+1)) / image_b_point(i,j)*256;
-        rGain(i,j) = image_r_point(uint8(side_num/2) +1, uint8(side_num/2) +1) / image_r_point(i,j);
-        gGain(i,j) = image_g_point(uint8(side_num/2) +1, uint8(side_num/2) +1) / image_g_point(i,j);
-        bGain(i,j) = image_b_point(uint8(side_num/2) +1, uint8(side_num/2) +1) / image_b_point(i,j);
+        Gain(i,j) = image_point(uint8(side_num/2) +1, uint8(side_num/2) +1) / image_point(i,j);
     end
 end
-save('./src/rGain.mat', 'rGain');
-save('./src/gGain.mat', 'gGain');
-save('./src/bGain.mat', 'bGain');
+save('./src/data/Gain.mat', 'Gain');
+
+
 
 
 
