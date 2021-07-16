@@ -1,10 +1,10 @@
 clc;clear;close all;
-
+tic;
 % --------global velue---------
 expandNum = 2;
-Th = 50;
+Th = 30;
 
-
+% --------raw parameters-------
 filePath = 'images/HisiRAW_4208x3120_8bits_RGGB.raw';
 bayerFormat = 'RGGB';
 bayerBits = 8;
@@ -14,28 +14,32 @@ col = 3120;
 
 rawData = readRaw(filePath, bayerBits, row, col);
 [height, width, channel] = size(rawData);
-imshow(rawData);
 
-img_r_expand = mirrorExpand(img_r, expandNum);
+img_expand = expandRaw(rawData, expandNum);
 
 disImg = zeros(height, width);
-for i = expandNum+1 : height+expandNum
-    for j = expandNum+1 : width+expandNum
-        kernal_img = img_r_expand(i-expandNum:i+expandNum, j-expandNum:j+expandNum);
-        kernal_img_list = kernal_img(:)';
-        around_value = kernal_img_list([1: floor(numel(kernal_img_list)/2), floor(numel(kernal_img_list)/2)+2:end]);
-        around_value_sort = sort(around_value);
-        around_count = numel(around_value_sort);
-        kernal_img_median = (around_value_sort(around_count/2) + around_value_sort(around_count/2+1))/2;
-        
-        diff = around_value_sort - ones(1, around_count) * img_r_expand(i, j);
-        if (nnz(diff<0) >= (around_count-1)) || (nnz(diff>0) >= (around_count-1))
-            disImg(i-expandNum, j-expandNum) = kernal_img_median;
-        else
-            disImg(i-expandNum, j-expandNum) = img_r_expand(i, j);
-        end
+for i = expandNum+1 : 2 : height+expandNum
+    for j = expandNum+1 : 2 : width+expandNum
+        % R
+        % get the pixel around the current R pixel
+        around_R_pixel = [img_expand(i-2, j-2) img_expand(i-2, j) img_expand(i-2, j+2) img_expand(i, j-2) img_expand(i, j+2) img_expand(i+2, j-2) img_expand(i+2, j) img_expand(i+2, j+2)];
+        disImg(i-expandNum, j-expandNum) = judgeDefectPixel(around_R_pixel, img_expand(i, j), Th);
+        % Gr
+        % get the pixel around the current Gr pixel
+        around_Gr_pixel = [img_expand(i-1, j) img_expand(i-2, j+1) img_expand(i-1, j+2)  img_expand(i, j-1) img_expand(i, j+3) img_expand(i+1, j) img_expand(i+2, j+1) img_expand(i+1, j+2)];
+        disImg(i-expandNum, j-expandNum+1) = judgeDefectPixel(around_Gr_pixel, img_expand(i, j+1), Th);
+        % B
+        % get the pixel around the current B pixel
+        around_B_pixel = [img_expand(i-1, j-1) img_expand(i-1, j+1) img_expand(i-1, j+3) img_expand(i+1, j-1) img_expand(i+1, j+3) img_expand(i+3, j-1) img_expand(i+3, j+1) img_expand(i+3, j+3)];
+        disImg(i-expandNum+1, j-expandNum+1) = judgeDefectPixel(around_B_pixel, img_expand(i+1, j+1), Th);
+        % Gb
+        % get the pixel around the current Gb pixel
+        around_Gb_pixel = [img_expand(i, j-1) img_expand(i-1, j) img_expand(i, j+1) img_expand(i+1, j-2) img_expand(i+1, j+2) img_expand(i+2, j-1) img_expand(i+3, j) img_expand(i+2, j+1)];
+        disImg(i-expandNum+1, j-expandNum) = judgeDefectPixel(around_Gb_pixel, img_expand(i+1, j), Th);
     end
 end
 figure();
-subplot(121);imshow(uint8(img_r));title('org');
-subplot(122);imshow(uint8(disImg));title('corrected');
+imshow(rawData);title('org');
+figure();
+imshow(uint8(disImg));title('corrected');
+disp(['cost time£º',num2str(toc)])
