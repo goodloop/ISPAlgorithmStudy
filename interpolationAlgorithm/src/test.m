@@ -1,0 +1,10 @@
+X = [0 pi/6 pi/4 pi/3 pi/2];
+Y = [0 0.5 0.7071 0.8660 1];
+x = linspace(0, pi, 50);
+M = 1;
+[y, R, A, C, L] = LagrangeInterpolation(X, Y, x, M);
+y1 = sin(x);
+errorbar(x, y, R, '.g');
+hold on;
+plot(X, Y, 'or', x, y, '.k', x, y1, '-b');
+length('误差', '样本点', '插值估计', 'sin(x)');

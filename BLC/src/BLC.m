@@ -68,7 +68,7 @@ switch bayerFormat
     case 'GRBG'
         disp('bayerFormat: GRBG');
         cData(1:2:end, 1:2:end) = cGr(1:1:end, 1:1:end);
-        datacData(1:2:end, 2:2:end) = cR(1:1:end, 1:1:end);
+        cData(1:2:end, 2:2:end) = cR(1:1:end, 1:1:end);
         cData(2:2:end, 1:2:end) = cB(1:1:end, 1:1:end);
         data(2:2:end, 2:2:end) = cGb(1:1:end, 1:1:end);
     case 'GBRG'
