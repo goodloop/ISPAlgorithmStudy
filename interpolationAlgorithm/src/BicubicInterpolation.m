@@ -4,7 +4,7 @@
 %% fuction: 双三次内插法
 %% --------------------------------
 clc,clear,close all;
-orgImage = imread('lena.bmp');
+orgImage = imread('./images/lena.bmp');
 [width, height] = size(orgImage);%将图像隔行隔列抽取元素，得到缩小的图像f
 figure; imshow(orgImage); title('org image');%显示原图像
 
@@ -46,7 +46,7 @@ for i = 1:magnification * m%利用双三次插值公式对新图象所有像素赋值
 end
 %显示插值后的图像
 figure,
-subplot(121);imshow(uint8(smallImage));title('small image');%显示缩小的图像
-subplot(122);imshow(uint8(newImage));title('BicubicInterpolation');
+% subplot(121);imshow(uint8(smallImage));title('small image');%显示缩小的图像
+imshow(uint8(newImage));title('BicubicInterpolation');
 
 

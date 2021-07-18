@@ -6,7 +6,7 @@
 
 clc,clear,close all;
 % 读取图片
-orgImage = imread('lena.bmp');
+orgImage = imread('./images/lena.bmp');
 figure;imshow(orgImage);title('org image');
 
 % 获取长宽

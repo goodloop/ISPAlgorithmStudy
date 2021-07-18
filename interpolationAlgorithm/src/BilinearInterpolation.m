@@ -8,7 +8,7 @@
 
 clc,clear,close all;
 % 读取图片
-orgImage = imread('lena.bmp');
+orgImage = imread('./images/lena.bmp');
 figure;imshow(orgImage);title('org image');
 
 % 获取长宽
@@ -59,6 +59,6 @@ for i = 1 : newWidth
    end
 end
 figure;
-subplot(121);imshow(uint8(smallImage));title('small image');
-subplot(122);imshow(uint8(newImage));title('BilinearInterpolation');
+% subplot(121);imshow(uint8(smallImage));title('small image');
+imshow(uint8(newImage));title('BilinearInterpolation');
 
