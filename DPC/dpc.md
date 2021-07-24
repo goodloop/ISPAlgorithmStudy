@@ -2,7 +2,7 @@
 
 ## 现象
 
-![](E:\Fred\ISP\ISPAlgorithmStudy\DPC\images\dpc.png)
+![](images\dpc.png)
 
 ## 造成坏点的原因
 
@@ -190,7 +190,7 @@ end
 
 矫正结果
 
-![](E:\Fred\ISP\ISPAlgorithmStudy\DPC\images\res.jpg)
+![](images\res.jpg)
 
 ### 相关链接
 
