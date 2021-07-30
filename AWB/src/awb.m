@@ -1,20 +1,27 @@
 clc;clear;close all;
-path  = 'images\test.jpg';
+path  = 'images\NikonD5200_0001_G_AS.png';
 img = imread(path);
 figure();
+subplot(221)
 imshow(img);
 title('org');
 
 % corrected by gw
 gwImg = gw(img);
-figure();
+subplot(222)
 imshow(gwImg);
 title('gw');
 
 % corrected by pr
 gwImg = pr(img);
-figure();
+subplot(223)
 imshow(gwImg);
 title('pr');
+
+% corrected by qcgp
+gwImg = qcgp(img);
+subplot(224)
+imshow(gwImg);
+title('qcgp');
 
 
