@@ -1,5 +1,5 @@
 clc;clear;close all;
-path  = 'images\test.jpg'; %test.jpg NikonD5200_0001_G_AS.png
+path  = 'images\NikonD5200_0001_G_AS.png'; %test.jpg NikonD5200_0001_G_AS.png
 img = imread(path);
 figure();
 subplot(221)
