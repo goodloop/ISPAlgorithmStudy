@@ -1,10 +1,7 @@
-data = textread('data\gamma.txt', '%s');
-xStr = char(data(1));
-yStr = char(data(2));
-xC = strsplit(xStr, ',');
-yC = strsplit(yStr, ',');
-x = hex0x2Dec(xC);
-y = hex0x2Dec(yC);
-plot(x, y);
+clc;clear; close all;
+data = csvread('data/Gamma_Data_DEC_20210804103309.csv');
+plot(data);
+xlim([0, 1024]);
+ylim([0, 4098]);
 hold on;
-plot([0 255], [0 1023], 'r')
+plot([0, 1024], [0, 4098], 'r');
