@@ -30,6 +30,9 @@ for i=1:200
         z2(i, j) = exp(-(a(i, j)-220)^2/1800);
     end
 end
+figure();
+mesh(x, y, z2);
+title('ÏñËØÈ¨ÖØ');
 z = z1.*z2;
 figure();
 mesh(x, y, z)
