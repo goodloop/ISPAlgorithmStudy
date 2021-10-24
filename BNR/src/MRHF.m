@@ -23,6 +23,7 @@ title('noise file');
 
 DenoisedImg = zeros(m,n);
 PaddedImg = padarray(I,[1, 1],'symmetric','both');
+
 h = 2;
 k = 0.01;
 
