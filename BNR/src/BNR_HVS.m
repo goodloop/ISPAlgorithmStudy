@@ -12,10 +12,10 @@ clear all;
 clc
 
 neighborhood_size = 5;
-initial_noise_level = 256 * 10 / 100;
-hvs_min = 4;
-hvs_max = 7;
-threshold_red_blue = 6;
+initial_noise_level = 15;
+hvs_min = 0.15;
+hvs_max = 0.25;
+threshold_red_blue = 0.13;
 BayerFormat = 'RGGB';
 
 
@@ -71,9 +71,9 @@ for i = pixel_pad+1: h+pixel_pad
             noise_level_previous_green = initial_noise_level;
         else
             noise_level_previous_green = noise_level_current_green;
-            if mod(i, 2) == 0       % red
+            if mod(i, 2) ~= 0       % red
                 noise_level_previous_red = noise_level_current_red;
-            elseif mod(i, 2) ~= 0   % blue
+            elseif mod(i, 2) == 0   % blue
                 noise_level_previous_blue = noise_level_current_blue;
             end
         end
@@ -145,9 +145,25 @@ for i = pixel_pad+1: h+pixel_pad
             threshold_low = (d_min + threshold_high) / 2;
         end
         
+        % weight computation
+        size_d = size(d);
+        length_d = size_d(2);
+        weight = zeros(size(d));
+        pf = 0;
+        for w_i = 1: size(d)
+            if (d(w_i) <= threshold_low)
+                weight(w_i) = 1;
+            elseif (d(w_i) > threshold_high)
+                weight(w_i) = 0;
+            elseif ((d(w_i) > threshold_low) && (d(w_i) < threshold_high))
+                weight(w_i) = 1 + ((d(w_i) - threshold_low) / (threshold_low - threshold_high));
+            pf = pf + weight(w_i) * neighborhood(w_i)+ (1 - weight(w_i)) * center_pixel;
+            end
+        end
+        denoised_out(i - pixel_pad, j - pixel_pad) = pf / length_d;
     end
 end
-
+imshow(denoised_out, [])
 
 
 
