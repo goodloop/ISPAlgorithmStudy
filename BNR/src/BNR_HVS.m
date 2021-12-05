@@ -9,13 +9,14 @@
 
 close all;
 clear all;
-clc
+clc;
 
+%% --------------parameters set---------------------------------
 neighborhood_size = 5;
-initial_noise_level = 15;
-hvs_min = 0.15;
-hvs_max = 0.25;
-threshold_red_blue = 0.13;
+initial_noise_level = 25;
+hvs_min = 3.89;
+hvs_max = 7.78;
+threshold_red_blue = 5.06;
 BayerFormat = 'RGGB';
 
 
@@ -23,33 +24,34 @@ BayerFormat = 'RGGB';
 % get org image
 addpath('../publicFunction');
 org_img = imread('images/kodak_fence.tif');
-[h, w, c] = size(org_img);
-% figure();
-% imshow(org_img);
-% title('org image');
+double_img = double(org_img);
+[h, w, c] = size(double_img);
+figure();
+imshow(org_img);
+title('org image');
 
 % rgb2raw
-rggb_raw = uint8(RGB2Raw('../BNR/images/kodak_fence.tif', BayerFormat));
-% figure();
-% imshow(rggb_raw);
-% title('raw');
+rggb_raw = RGB2Raw('../BNR/images/kodak_fence.tif', BayerFormat);
+figure();
+imshow(rggb_raw,[]);
+title('raw');
 
 % add noise to raw
-noise_raw = imnoise(rggb_raw, 'gaussian', 0.001);
-% figure();
-% imshow(noise_raw);
-% title('noisr raw');
-
-%% -------------Denoise-----------------------------------------
+noise_add = 10*randn(h, w);
+noise_raw = rggb_raw + noise_add;
 noise_raw(noise_raw<0) = 0;
 noise_raw(noise_raw>255) = 255;
+figure();
+imshow(noise_raw,[]);
+title('noise raw');
 
+%% -------------Denoise-----------------------------------------
 % pad raw
 pixel_pad = floor(neighborhood_size / 2);
 pad_raw = expandRaw(noise_raw, pixel_pad);
 
 denoised_out = zeros(h, w);
-texture_degree_debug = zeros(h, w);
+% texture_degree_debug = zeros(h, w);
 
 for i = pixel_pad+1: h+pixel_pad
     for j = pixel_pad+1: w+pixel_pad
@@ -57,9 +59,9 @@ for i = pixel_pad+1: h+pixel_pad
         center_pixel = pad_raw(i, j);
         
         % signal analyzer block
-        half_max = 255 / 2;
+        half_max = floor(255 / 2);
         if center_pixel <= half_max
-            hvs_weight = -(((hvs_max - hvs_min) * center_pixel) / half_max) + hvs_max;
+            hvs_weight = -(((hvs_max - hvs_min) * double(center_pixel)) / half_max) + hvs_max;
         else
             hvs_weight = (((center_pixel - 255) * (hvs_max - hvs_min)) / (255 - half_max)) + hvs_max;
         end
@@ -163,7 +165,7 @@ for i = pixel_pad+1: h+pixel_pad
         denoised_out(i - pixel_pad, j - pixel_pad) = pf / length_d;
     end
 end
-imshow(denoised_out, [])
+figure();imshow(denoised_out, []);title('denoise');
 
 
 
