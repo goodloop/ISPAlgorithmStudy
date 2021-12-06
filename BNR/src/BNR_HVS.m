@@ -13,10 +13,10 @@ clc;
 
 %% --------------parameters set---------------------------------
 neighborhood_size = 5;
-initial_noise_level = 25;
-hvs_min = 3.89;
-hvs_max = 7.78;
-threshold_red_blue = 5.06;
+initial_noise_level = 30;
+hvs_min = 5;
+hvs_max = 10;
+threshold_red_blue = 12;
 BayerFormat = 'RGGB';
 
 
@@ -152,22 +152,22 @@ for i = pixel_pad+1: h+pixel_pad
         length_d = size_d(2);
         weight = zeros(size(d));
         pf = 0;
-        for w_i = 1: size(d)
+        for w_i = 1: length_d
             if (d(w_i) <= threshold_low)
                 weight(w_i) = 1;
             elseif (d(w_i) > threshold_high)
                 weight(w_i) = 0;
             elseif ((d(w_i) > threshold_low) && (d(w_i) < threshold_high))
                 weight(w_i) = 1 + ((d(w_i) - threshold_low) / (threshold_low - threshold_high));
-            pf = pf + weight(w_i) * neighborhood(w_i)+ (1 - weight(w_i)) * center_pixel;
             end
+            pf = pf + weight(w_i) * neighborhood(w_i)+ (1 - weight(w_i)) * center_pixel;
         end
         denoised_out(i - pixel_pad, j - pixel_pad) = pf / length_d;
     end
 end
-figure();imshow(denoised_out, []);title('denoise');
-
-
+figure();imshow(uint8(denoised_out),[]);title('denoise');
+figure();imshow((noise_raw-rggb_raw), []);title('noise');
+figure();imshow((denoised_out-rggb_raw), []);title('noise reduced');
 
 
 
