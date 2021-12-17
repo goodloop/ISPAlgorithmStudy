@@ -4,7 +4,7 @@
 
 ## 图像噪声产生的原因
 
-![](images\noiseClass.png)
+![](https://gitee.com/wtzhu13/ISPAlgorithmStudy/blob/master/BNR/images/noiseClass.png)
 
 ## 矫正方法
 
