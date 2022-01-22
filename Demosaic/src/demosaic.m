@@ -1,24 +1,24 @@
 %% --------------------------------
 %% author:wtzhu
 %% date: 20210705
-%% fuction: main file of Demosaic
+%% fuction: main file of Demosaic. The simple linear interpolation.
 %% note: add RGGB format only, other formats will be added later
 %% --------------------------------
 clc;clear;close all;
 
-% ------------Raw Format----------------
-filePath = 'images/RGBTest_8bits_RGGB.raw';
+%% ------------Raw Format----------------
+filePath = 'images/kodim19_8bits_RGGB.raw';
 bayerFormat = 'RGGB';
-width = 640;
-height= 480;
+width = 512;
+height= 768;
 bits = 8;
-% --------------------------------------
+%% --------------------------------------
 bayerData = readRaw(filePath, bits, width, height);
 figure();
 imshow(bayerData);
 title('raw image');
 
-% expand image inorder to make it easy to calculate edge pixels
+%% expand image inorder to make it easy to calculate edge pixels
 bayerPadding = zeros(height + 2,width+2);
 bayerPadding(2:height+1,2:width+1) = uint32(bayerData);
 bayerPadding(1,:) = bayerPadding(3,:);
@@ -26,6 +26,7 @@ bayerPadding(height+2,:) = bayerPadding(height,:);
 bayerPadding(:,1) = bayerPadding(:,3);
 bayerPadding(:,width+2) = bayerPadding(:,width);
 
+%% main code of imterpolation
 imDst = zeros(height+2, width+2, 3);
 for ver = 2:height + 1
     for hor = 2:width + 1
@@ -74,7 +75,7 @@ end
 imDst = uint8(imDst(2:height+1,2:width+1,:));
 figure,imshow(imDst);title('demosaic image');
 
-orgImage = imread('images/RGBTest.jpg');
+orgImage = imread('images/kodim19.png');
 figure, imshow(orgImage);title('org image');
 
 
