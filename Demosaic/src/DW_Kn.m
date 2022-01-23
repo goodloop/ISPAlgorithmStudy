@@ -1,4 +1,4 @@
-function Kn = DW_Kn(neighborhoodData, directionNum, rawFlag, needChannal)
+function Kn = DW_Kn(neighborhoodData, directionNum, rawFlag, needChannel)
 % DW_Kn.m    get rawData from HiRawImage
 %   Input:
 %       neighborhoodData    the data of neighborhood range
@@ -49,7 +49,7 @@ else
         Kn(11) = neighborhoodData(centerH+2, centerW-1) - (neighborhoodData(centerH+2, centerW-2) + neighborhoodData(centerH+2, centerW)) / 2;
         Kn(12) = neighborhoodData(centerH+1, centerW-2) - (neighborhoodData(centerH+2, centerW-2) + neighborhoodData(centerH, centerW-2)) / 2;
     case 4
-        if needChannal
+        if needChannel
             Kn(1) = neighborhoodData(centerH-1, centerW-1, 2) - neighborhoodData(centerH-1, centerW-1, 3);
             Kn(2) = neighborhoodData(centerH-1, centerW+1, 2) - neighborhoodData(centerH-1, centerW+1, 3);
             Kn(3) = neighborhoodData(centerH+1, centerW+1, 2) - neighborhoodData(centerH+1, centerW+1, 3);

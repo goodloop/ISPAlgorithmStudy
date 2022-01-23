@@ -19,6 +19,9 @@ isRaw = 1;
 notRaw = 0;
 needB = 1;
 needR = 0;
+RC = 1;
+GC = 2;
+BC = 3;
 
 %% --------------------------------------
 bayerData = readRaw(filePath, bits, width, height);
@@ -92,5 +95,26 @@ imDst(:, 1: 4, :) = imDst(:, 5: 8, :);
 imDst(:, width+5: width+8, :) = imDst(:, width+1: width+4, :);
 imDst(1:4, : , :) = imDst(5: 8, :, :);
 imDst(height+5: height+8, : , :) = imDst(height+1: height+4, :, :);
+
+%% add R/B to G
+for ver = 5: height + 4
+    for hor = 5: width +4
+        neighborhoodData = imDst(ver-4: ver+4, hor-4: hor+4, :);
+        % R channal
+        if(1 == mod(ver, 2) && 1 == mod(hor, 2))
+            continue
+        % B channal
+        elseif (0 == mod(ver, 2) && 0 == mod(hor, 2))
+            continue
+        % G
+        else
+            Wrn = DW_Wn(neighborRaw, 12, GC, RC);
+            wbn = DW_Wn(neighborRaw, 12, GC, BC);
+            imDst(ver, hor, 2) = bayerPadding(ver, hor);      
+        end
+    end
+end
+
+
 
 
