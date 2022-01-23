@@ -1,5 +1,5 @@
 function Wn = DW_Wn(neighborhoodData, directionNum)
-% readRaw.m    get rawData from HiRawImage
+% DW_Wn.m    get rawData from HiRawImage
 %   Input:
 %       neighborhoodData    the data of neighborhood range
 %       directionNum        the num of direction

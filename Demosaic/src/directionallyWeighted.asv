@@ -89,9 +89,9 @@ for ver = 5: height + 4
             
         % B channal
         elseif (0 == mod(ver, 2) && 0 == mod(hor, 2))
-            neighborRaw = bayerPadding(ver-4: ver+4, hor-4: hor+4);
+            neighborRaw = bayerPadding(ver-1: ver+1, hor-1: hor+1);
             Wn = DW_Wn(neighborRaw, 4);
-            neighborhoodData = imDst(ver-4: ver+4, hor-4: hor+4, :);
+            neighborhoodData = imDst(ver-1: ver+1, hor-1: hor+1, :);
             Kn = DW_Kn(neighborhoodData, 4, notRaw, needR);
         else
             continue
