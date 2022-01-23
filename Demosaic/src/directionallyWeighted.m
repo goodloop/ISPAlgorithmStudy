@@ -65,18 +65,6 @@ imDst(:, width+5: width+8, :) = imDst(:, width+1: width+4, :);
 imDst(1:4, : , :) = imDst(5: 8, :, :);
 imDst(height+5: height+8, : , :) = imDst(height+1: height+4, :, :);
 
-% imDst(:, 1: 4, 1) = imDst(:, 5: 8, 1);
-% imDst(:, width+5: width+8, 1) = imDst(:, width+1: width+4, 2);
-% imDst(1:4, : , 2) = imDst(5: 8, :, 2);
-% imDst(height+5: height+8, : , 2) = imDst(height+1: height+4, :, 2);
-% 
-% imDst(:, 1: 4, 2) = imDst(:, 5: 8, 2);
-% imDst(:, width+5: width+8, 2) = imDst(:, width+1: width+4, 2);
-% imDst(1:4, : , 2) = imDst(5: 8, :, 2);
-% imDst(height+5: height+8, : , 2) = imDst(height+1: height+4, :, 2);
-% imshow(uint8(imDst(:,:,2)));title('G');
-
-
 %% add R/B to B/R
 for ver = 5: height + 4
     for hor = 5: width +4
@@ -86,19 +74,23 @@ for ver = 5: height + 4
             Wn = DW_Wn(neighborRaw, 4);
             neighborhoodData = imDst(ver-4: ver+4, hor-4: hor+4, :);
             Kn = DW_Kn(neighborhoodData, 4, notRaw, needB);
-            
+            imDst(ver, hor, 3) = imDst(ver, hor, 2) - sum(Wn .* Kn);
         % B channal
         elseif (0 == mod(ver, 2) && 0 == mod(hor, 2))
             neighborRaw = bayerPadding(ver-4: ver+4, hor-4: hor+4);
             Wn = DW_Wn(neighborRaw, 4);
             neighborhoodData = imDst(ver-4: ver+4, hor-4: hor+4, :);
             Kn = DW_Kn(neighborhoodData, 4, notRaw, needR);
+            imDst(ver, hor, 1) = imDst(ver, hor, 2) - sum(Wn .* Kn);
         else
             continue
         end
-      
     end
 end
-
+% expand the imDst
+imDst(:, 1: 4, :) = imDst(:, 5: 8, :);
+imDst(:, width+5: width+8, :) = imDst(:, width+1: width+4, :);
+imDst(1:4, : , :) = imDst(5: 8, :, :);
+imDst(height+5: height+8, : , :) = imDst(height+1: height+4, :, :);
 
 

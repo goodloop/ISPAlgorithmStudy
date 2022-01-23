@@ -86,13 +86,14 @@ for ver = 5: height + 4
             Wn = DW_Wn(neighborRaw, 4);
             neighborhoodData = imDst(ver-4: ver+4, hor-4: hor+4, :);
             Kn = DW_Kn(neighborhoodData, 4, notRaw, needB);
-            
+            imDst(ver, hor, 3) = imDst(ver, hor) - sum(Wn .* Kn);
         % B channal
         elseif (0 == mod(ver, 2) && 0 == mod(hor, 2))
-            neighborRaw = bayerPadding(ver-1: ver+1, hor-1: hor+1);
+            neighborRaw = bayerPadding(ver-4: ver+4, hor-4: hor+4);
             Wn = DW_Wn(neighborRaw, 4);
-            neighborhoodData = imDst(ver-1: ver+1, hor-1: hor+1, :);
+            neighborhoodData = imDst(ver-4: ver+4, hor-4: hor+4, :);
             Kn = DW_Kn(neighborhoodData, 4, notRaw, needR);
+            imDst(ver, hor, 1) = imDst(ver, hor) - sum(Wn .* Kn);
         else
             continue
         end
