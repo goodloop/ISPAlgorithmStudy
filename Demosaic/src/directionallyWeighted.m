@@ -27,12 +27,11 @@ bayerPadding = expandRaw(bayerData, 4);
 imDst = zeros(height+8, width+8, 3);
 for ver = 5: height + 4
     for hor = 5: width +4
-        fprintf('%d %d\n', ver, hor);
         % R channal
         if(1 == mod(ver, 2) && 1 == mod(hor, 2))
             disp('deal with R');
             neighborhoodData = bayerPadding(ver-4: ver+4, hor-4: hor+4);
-            [G, B] = DW_GB2R(neighborhoodData);
+            Wn = DW_Wn(neighborhoodData, 12);
         % B channal
         elseif (0 == mod(ver, 2) && 0 == mod(hor, 2))
             disp('deal with B')

@@ -1,0 +1,17 @@
+function Wn = DW_Wn(neighborhoodData, directionNum)
+% readRaw.m    get rawData from HiRawImage
+%   Input:
+%       neighborhoodData    the data of neighborhood range
+%       directionNum        the num of direction
+%   Output:
+%       Wn                  The lack of G and B on R 
+%   Instructions:
+%       author:     wtzhu
+%       e-mail:     wtzhu_13@163.com
+% Last Modified by wtzhu v1.0 2022-01-22
+% Note: 
+In = zeros(12, 1);
+Wn = zeros(12, 1);
+[h, w] = size(neighborhoodData);
+centerH = round(h/2);
+centerW = round(w/2);
