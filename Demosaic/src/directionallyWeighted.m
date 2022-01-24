@@ -131,19 +131,20 @@ for ver = 5: height + 4
         if(1 == mod(ver, 2) && 1 == mod(hor, 2))
             Wrn = DW_Wn(neighborhoodData, 12, RC, GC);           
             Krn = DW_Kn(neighborhoodData, 12, RC);
-            imDst(ver, hor, 2) = imDst(ver, hor, 2) - sum(Wrn .* Krn);
+            imDst(ver, hor, 2) = imDst(ver, hor, 1) + sum(Wrn .* Krn);
         % B channal
         elseif (0 == mod(ver, 2) && 0 == mod(hor, 2))
             Wbn = DW_Wn(neighborhoodData, 12, BC, GC);
             Kbn = DW_Kn(neighborhoodData, 12, BC);
-            imDst(ver, hor, 2) = imDst(ver, hor, 2) - sum(Wbn .* Kbn);
+            imDst(ver, hor, 2) = imDst(ver, hor, 3) + sum(Wbn .* Kbn);
         % G
         else
             continue
         end
     end
 end
-figure();imshow(uint8(imDst));title('demosaicking image');
+demosaicImg = imDst(5: height + 4, 5: width +4, :);
+figure();imshow(uint8(demosaicImg));title('demosaicking image');
 
 
 

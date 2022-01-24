@@ -3,17 +3,16 @@ function Kn = DW_Kn(neighborhoodData, directionNum, channelAdded)
 %   Input:
 %       neighborhoodData    the data of neighborhood range
 %       directionNum        the num of direction
-%       rawFlag             1: the data is Raw
-%                           0: the data is not Raw
-%       needChannal         1: R is in Raw, need to add B
-%                           0: B is in Raw, need to add R
+%       channelAdded        the channal to be interpolated
 %   Output:
-%       Wn                  The weignt of each direction
+%       Kn                  The color defference of each direction
 %   Instructions:
 %       author:     wtzhu
 %       e-mail:     wtzhu_13@163.com
-% Last Modified by wtzhu v1.0 2022-01-23
+% Last Modified by wtzhu v1.0 2022-01-24
 % Note: 
+
+% The default value of channalAdded is 1 if there is no input of it
 if nargin < 3
     channelAdded = 1;
 end
@@ -21,7 +20,10 @@ Kn = zeros(directionNum, 1);
 [h, w, c] = size(neighborhoodData);
 centerH = round(h/2);
 centerW = round(w/2);
+
 if c == 1
+    % Take the average of the two adjacent samples of the desired color in the
+    % Bayer array if the neighborhoodData is Raw
     Kn(1) = neighborhoodData(centerH, centerW-1) - (neighborhoodData(centerH, centerW) + neighborhoodData(centerH, centerW-2)) / 2;
     Kn(2) = neighborhoodData(centerH-1, centerW) - (neighborhoodData(centerH, centerW) + neighborhoodData(centerH-2, centerW)) / 2;
     Kn(3) = neighborhoodData(centerH, centerW+1) - (neighborhoodData(centerH, centerW) + neighborhoodData(centerH, centerW+2)) / 2;
