@@ -20,7 +20,7 @@ Wn = zeros(directionNum, 1);
 [h, w, c] = size(neighborhoodData);
 centerH = round(h/2);
 centerW = round(w/2);
-
+sumIn = 0;
 switch directionNum
     case 12
         In(1) = abs(neighborhoodData(centerH, centerW-1, channelAdded) - neighborhoodData(centerH, centerW+1, channelAdded)) + ...
@@ -58,7 +58,7 @@ switch directionNum
 
         In(12) = 0.5*(abs(neighborhoodData(centerH+1, centerW-2, channelAdded) - neighborhoodData(centerH-1, centerW+2, channelAdded)) + ...
                       abs(neighborhoodData(centerH+2, centerW-4, channelDeal) - neighborhoodData(centerH, centerW, channelDeal)));   
-        sumIn = 0;
+        
         for i =1 :12
             sumIn = sumIn + (1/(1+In(i)));
         end
@@ -77,7 +77,7 @@ switch directionNum
 
         In(4) = abs(neighborhoodData(centerH+1, centerW-1) - neighborhoodData(centerH-1, centerW+1)) + ...
                 abs(neighborhoodData(centerH+2, centerW-2) - neighborhoodData(centerH, centerW));
-        sumIn = 0;
+
         for i =1 :4
             sumIn = sumIn + (1/(1+In(i)));
         end
