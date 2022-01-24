@@ -110,7 +110,7 @@ for ver = 5: height + 4
         else
             Wrn = DW_Wn(neighborhoodData, 12, GC, RC);
             wbn = DW_Wn(neighborhoodData, 12, GC, BC);
-                
+            imDst(ver, hor, 2) = bayerPadding(ver, hor);      
         end
     end
 end
