@@ -45,6 +45,7 @@ switch BayerFormat
         rawImg(2:2:end, 2:2:end) = orgImg(2:2:end, 2:2:end, 2);
 end
 rawData = rawImg;
+imshow(uint8(rawData));
 % save rawData
 nameList = strsplit(path, '.');
 fileName = char(cellstr(nameList(1)));
