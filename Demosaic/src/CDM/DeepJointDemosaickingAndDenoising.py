@@ -80,5 +80,5 @@ if __name__ == '__main__':
     net = DJDDNetwork()
     print(net)
     inTensor = th.randn(1, 3, 128, 128)
-    output = net.forward(inTensor)
+    output = net(inTensor)
     print(output.shape)
