@@ -19,29 +19,36 @@ Fred        | 20220422  | crop image to the same size
 """
 import math
 import os
+import shutil
+
 import cv2 as cv
 import numpy as np
 import skimage.io
 from shutil import copyfile
 import matplotlib.pyplot as plt
 
-data_dir = "E:\\Fred\\ISP\\trainData\\AboveVGA"
-cropImages_dir = "E:\\Fred\\ISP\\trainData\\cropImages"
+org_data_dir = "D:\\ISP\\PersonalProjects\\data\\pristine_images"
+cropImages_dir = "D:\\ISP\\PersonalProjects\\data\\djddData\\train\\labels"
+mosaicking_dir = "D:\\ISP\\PersonalProjects\\data\\djddData\\train\\samples"
 
 
-def crop_image_to_VGA():
-    images_list = os.listdir(data_dir)
-    width_new, high_new = (640, 480)
-
-    for image_name in images_list:
-        img = cv.imread(os.path.join(data_dir, image_name))
+def filter_VGA():
+    # todo filter the image whose size if above VGA
+    images_list = os.listdir(org_data_dir)
+    VGA_num = 0
+    for img_name in images_list:
+        img = cv.imread(os.path.join(org_data_dir, img_name))
         height, width, channel = img.shape
-        img_crop = img[math.ceil((height - high_new) / 2): height - ((height - high_new) // 2), math.ceil((width - width_new) / 2): width - ((width - width_new) // 2), :]
-        # print("==== crop {} to {}*{} ====".format(image_name, img_crop.shape[1], img_crop.shape[0]))
-        if img_crop.shape != (480, 640, 3):
-            print(image_name, img_crop.shape)
-        # saveName = image_name.replace("bmp", "jpg")
-        # cv.imwrite(os.path.join(cropImages_dir, saveName), img_crop)
+        width_new, high_new = (640, 480)
+        if width >= 640 and height >= 480:
+            VGA_num += 1
+            img_crop = img[math.ceil((height - high_new) / 2): height - ((height - high_new) // 2),
+                           math.ceil((width - width_new) / 2): width - ((width - width_new) // 2), :]
+            print("{}. ==== crop {} to {}*{} ====".format(VGA_num, img_name, img_crop.shape[1], img_crop.shape[0]))
+            if img_crop.shape != (480, 640, 3):
+                print(img_name, img_crop.shape)
+            save_name = img_name.replace("bmp", "jpg")
+            cv.imwrite(os.path.join(cropImages_dir, save_name), img_crop)
 
 
 def jpg2RAW():
@@ -55,26 +62,28 @@ def jpg2RAW():
     images_list = os.listdir(cropImages_dir)
     for im in images_list:
         img = cv.imread(os.path.join(cropImages_dir, im))
-        # mos = np.copy(img)
-        # mask = np.zeros(img.shape)
-        # print(mask.shape)
-        # # blue
-        # mask[0::2, 1::2, 0] = 1
-        #
-        # # green
-        # mask[0::2, 0::2, 1] = 1
-        # mask[1::2, 1::2, 1] = 1
-        #
-        # # red
-        # mask[1::2, 0::2, 2] = 1
-        #
-        # masic_image = mos * mask
-        # a = masic_image.astype(np.uint8)
+        mos = np.copy(img)
+        mask = np.zeros(img.shape)
+        print(mask.shape)
+        # blue
+        mask[0::2, 1::2, 0] = 1
+
+        # green
+        mask[0::2, 0::2, 1] = 1
+        mask[1::2, 1::2, 1] = 1
+
+        # red
+        mask[1::2, 0::2, 2] = 1
+
+        masic_image = mos * mask
+
+        a = masic_image.astype(np.uint8)
+        cv.imwrite(os.path.join(mosaicking_dir, im.replace(".jpg", "_raw.jpg")), a)
         # plt.figure()
         # plt.imshow(a)
         # plt.show()
 
 
 if __name__ == '__main__':
-    # jpg2RAW()
-    crop_image_to_VGA()
+    jpg2RAW()
+    # filter_VGA()
