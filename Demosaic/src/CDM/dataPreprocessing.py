@@ -26,10 +26,11 @@ import numpy as np
 import skimage.io
 from shutil import copyfile
 import matplotlib.pyplot as plt
+import skimage.io
 
-org_data_dir = "D:\\ISP\\PersonalProjects\\data\\pristine_images"
-cropImages_dir = "D:\\ISP\\PersonalProjects\\data\\djddData\\train\\labels"
-mosaicking_dir = "D:\\ISP\\PersonalProjects\\data\\djddData\\train\\samples"
+org_data_dir = "E:\\Fred\\ISP\\trainData\\djddData\\train"
+cropImages_dir = "E:\\Fred\\ISP\\trainData\\djddData\\train\\labels"
+mosaicking_dir = "E:\\Fred\\ISP\\trainData\\djddData\\train\\samples"
 
 
 def filter_VGA():
@@ -54,17 +55,15 @@ def filter_VGA():
 def jpg2RAW():
     # todo jpg to raw
     """Bayer mosaic.
-         G R G R
-         B G B G
-         G R G R
-         B G B G
+         G B
+         R G
     """
     images_list = os.listdir(cropImages_dir)
-    for im in images_list:
+    for i, im in enumerate(images_list):
         img = cv.imread(os.path.join(cropImages_dir, im))
         mos = np.copy(img)
         mask = np.zeros(img.shape)
-        print(mask.shape)
+        print("{}, {}===2RAW===".format((i+1), im))
         # blue
         mask[0::2, 1::2, 0] = 1
 
@@ -78,9 +77,11 @@ def jpg2RAW():
         masic_image = mos * mask
 
         a = masic_image.astype(np.uint8)
-        cv.imwrite(os.path.join(mosaicking_dir, im.replace(".jpg", "_raw.jpg")), a)
+        cv.imwrite(os.path.join(mosaicking_dir, im.replace(".jpg", "_raw.png")), a, [int(cv.IMWRITE_JPEG_QUALITY), 100])
+        # b = cv.imread(os.path.join(mosaicking_dir, im.replace(".jpg", "_raw.png")))
+        # rgb_img = cv.cvtColor(b, cv.COLOR_BGR2RGB)
         # plt.figure()
-        # plt.imshow(a)
+        # plt.imshow(rgb_img)
         # plt.show()
 
 
