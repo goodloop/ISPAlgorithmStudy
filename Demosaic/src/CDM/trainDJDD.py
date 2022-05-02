@@ -32,14 +32,14 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # data
 train_transform = transforms.Compose([transforms.ToTensor(), transforms.CenterCrop((480, 640))])
 # prepare for training data
-train_root_dir = "E:\\Fred\\ISP\\trainData\\djddData\\train"
+train_root_dir = "D:\\ISP\\PersonalProjects\\data\\djddData\\train"
 train_sample_dir = "samples"
 train_label_dir = "labels"
 train_dataset = MyData(train_root_dir, train_sample_dir, train_label_dir, train_transform)
 
 
 # prepare for test data
-test_root_dir = "E:\\Fred\\ISP\\trainData\\djddData\\Validations"
+test_root_dir = "D:\\ISP\\PersonalProjects\\data\\djddData\\Validations"
 test_sample_dir = "samples"
 test_label_dir = "labels"
 test_dataset = MyData(test_root_dir, test_sample_dir, test_label_dir, train_transform)
@@ -48,8 +48,8 @@ print("training data size {}".format(len(train_dataset)))
 print("test data size {}".format(len(test_dataset)))
 
 # load data
-train_dataloader = DataLoader(train_dataset, batch_size=10, num_workers=0)
-test_dataloader = DataLoader(test_dataset, batch_size=10, num_workers=0)
+train_dataloader = DataLoader(train_dataset, batch_size=4, num_workers=0)
+test_dataloader = DataLoader(test_dataset, batch_size=4, num_workers=0)
 
 # load model
 train_model = torch.load("model_cpu_100.pth")
@@ -58,7 +58,7 @@ train_model.to(device)
 
 # set loss func
 loss_fuc = nn.MSELoss()
-loss_fuc.to(device)
+# loss_fuc.to(device)
 
 # optimizer
 lr = 0.01

@@ -21,14 +21,14 @@ from torch import nn
 import torch
 import cv2 as cv
 import matplotlib.pyplot as plt
-from torch.utils.data import DataLoader
-from torchvision import transforms
-from dataSet import MyData
+from DeepJointDemosaickingAndDenoising import DJDDNetwork
 
 
-model = torch.load("model.pth")
+model = DJDDNetwork()
+model.load_state_dict(torch.load("model_GPU_2000.pth"))
+# model = torch.load("model_cpu_100.pth")
 model.eval()
-raw = cv.imread("../../images/00191_raw.png")
+raw = cv.imread("../../images/00025_raw.png")
 
 # ndarray to tensor
 transform = torchvision.transforms.ToTensor()
@@ -37,10 +37,12 @@ tensor_raw = transform(raw)
 tensor_raw = torch.unsqueeze(tensor_raw, dim=0)
 print(tensor_raw.shape)
 # 4 dimensions tensor to 3 dimensions np.array
-output = model(tensor_raw)[0].detach().numpy().transpose(1, 2, 0).astype('uint8')
-# cv.imwrite("output1.png", output, [int(cv.IMWRITE_JPEG_QUALITY), 100])
+output = model(tensor_raw)[0].detach().numpy().transpose(1, 2, 0)   # .astype('uint8')
+img = cv.cvtColor(output, cv.COLOR_BGR2RGB)
+# cv.imwrite("output1.jpg", output.astype('uint8'))  # , [int(cv.IMWRITE_JPEG_QUALITY), 100]
+print(img.shape)
 plt.figure()
-plt.imshow(output)
+plt.imshow(img)
 plt.show()
 
 
