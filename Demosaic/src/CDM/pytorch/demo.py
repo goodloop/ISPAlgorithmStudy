@@ -54,8 +54,8 @@ def main(args):
     # todo org-> cfa
 
     model = DJDDNetwork()
-    model.load_state_dict(torch.load("model_GPU_2000.pth"))
-    # model = torch.load("model_cpu_100.pth")
+    # model.load_state_dict(torch.load("model_GPU_2000.pth"))
+    model = torch.load("model_cpu_100.pth")
     model.eval()
     # raw = cv.imread("../../images/00025_raw.png")
     org_img = cv.imread(args.input)
@@ -88,7 +88,7 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", type=str, default="input.png", help="path to input image.")
+    parser.add_argument("--input", type=str, default="kodim19.png", help="path to input image.")
     parser.add_argument("--output", type=str, default="output.png", help="path to output image.")
     parser.add_argument("--output_mosaicked", type=str, default="cfa.png", help="path to ouput cfa image")
     args = parser.parse_args()
