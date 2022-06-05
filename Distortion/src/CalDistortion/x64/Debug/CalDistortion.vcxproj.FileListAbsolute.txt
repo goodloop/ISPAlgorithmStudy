@@ -1,0 +1,2 @@
+D:\OpenCVRef\CPP\CalDistortion\x64\Debug\CalDistortion.exe
+D:\OpenCVRef\CPP\CalDistortion\x64\Debug\CalDistortion.pdb
