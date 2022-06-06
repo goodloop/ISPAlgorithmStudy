@@ -1,0 +1,4 @@
+﻿  calDistortion.cpp
+F:\Demos\calDistortion\calDistortion\calDistortion.cpp(87,41): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+F:\Demos\calDistortion\calDistortion\calDistortion.cpp(23,10): warning C4101: “temp_1”: 未引用的局部变量
+  calDistortion.vcxproj -> F:\Demos\calDistortion\x64\Debug\calDistortion.exe
