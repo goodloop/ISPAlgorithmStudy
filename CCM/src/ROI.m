@@ -9,6 +9,8 @@ global curPos
 global prePos
 global img
 global ROI_img_cell
+global ROI_cell
+ROI_cell = zeros(24, 4);
 % use reshape(permute(ROI_mean_value, [2,1,3]), [24,3]) transform 4*6*3 to 24*3
 global ROI_mean_value
 ROI_mean_value = zeros(4, 6, 3);
@@ -70,6 +72,7 @@ function drawROI()
     global prePos
     global img
     global ROI_img_cell
+    global ROI_cell
     x = curPos(1,1) - prePos(1, 1);
     y = curPos(1,2) - prePos(1, 2);
     deltaX = x / 6;
@@ -82,11 +85,13 @@ function drawROI()
                                   prePos(1,2) + deltaY /2 + deltaY * (i -1) - h / 2,...
                                   w,...
                                   h];
+            ROI_cell((i-1)*6+j, :) = rectROI;
             rectangle('Position',rectROI, 'LineWidth',2,'EdgeColor','r');
             roi = imcrop(img,rectROI); 
             ROI_img_cell(i, j) = {roi};
         end
     end
+    save('roi.mat', 'ROI_cell');
 end
 
 %% calculate the mean value of the three channels of ROI
@@ -99,6 +104,7 @@ function calMeanVOfROI()
             ROI_mean_value(i, j , :) = mean(roiMat, [1 2]);
         end
     end
+    save('targetRGB.mat', 'ROI_mean_value');
 end
 
 
