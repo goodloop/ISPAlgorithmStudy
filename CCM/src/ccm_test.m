@@ -1,6 +1,10 @@
 function ccm_test
 % Test program for applying Color Correction matrix.
 % Output for display gamma = 2.2 -- sRGB and Adobe RGB color spaces.
+% 1.48663 -0.192007 0.033443
+% -0.612018 2.03673 -0.796356
+% -0.367863 -0.580001 3.04927
+
 
 close all;
 uiwait(msgbox(['We recommend that you calculate the Color Correction Matrix (CCM),'...
